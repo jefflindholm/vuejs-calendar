@@ -4,21 +4,21 @@ const webpackConfig = require('./webpack.config.js').find(item => item.target ==
 const compiler = webpack(webpackConfig);
 
 module.exports = {
-  init(app) {
-    app.use(webpackDevMiddleware(compiler, {
-      hot: true,
-      stats: {
-        colors: true
-      },
-      historyApiFallback: true,
-      publicPath: webpackConfig.output.publicPath,
-      filename: webpackConfig.output.filename,
-    }));
+    init(app) {
+        app.use(webpackDevMiddleware(compiler, {
+            hot: true,
+            stats: {
+                colors: true
+            },
+            historyApiFallback: true,
+            publicPath: webpackConfig.output.publicPath,
+            filename: webpackConfig.output.filename,
+        }));
 
-    app.use(require("webpack-hot-middleware")(compiler, {
-      log: console.log,
-      path: '/__webpack_hmr',
-      heartbeat: 10 * 1000,
-    }));
-  }
+        app.use(require("webpack-hot-middleware")(compiler, {
+            log: console.log,
+            path: '/__webpack_hmr',
+            heartbeat: 10 * 1000,
+        }));
+    }
 };

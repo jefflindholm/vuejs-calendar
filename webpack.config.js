@@ -11,7 +11,8 @@ var baseConfig = {
         publicPath: '/dist/',
     },
     module: {
-        rules: [{
+        rules: [
+            {
                 test: /\.js$/,
                 use: [{
                     loader: 'babel-loader'
