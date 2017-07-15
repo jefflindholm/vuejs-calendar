@@ -13,6 +13,18 @@ app.get('/', (req, res) => {
     res.send(template);
 });
 
+const events = [];
+
+app.use(require('body-parser').json());
+app.post('/event', (req, res) => {
+    events.push(req.body);
+    console.log(events)
+    res.sendStatus(200);
+});
+app.get('/events', (req, res) => {
+    res.send(events);
+});
+
 const server = http.createServer(app);
 
 if (process.env.NODE_ENV === 'development') {
