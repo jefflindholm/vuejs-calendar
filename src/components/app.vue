@@ -2,6 +2,7 @@
 <div>
     <div id="header">
         <div>
+            <img src="../assets/logo.png" alt="Vue Cal Logo">
             <h1>Calendar</h1>
         </div>
         <div>

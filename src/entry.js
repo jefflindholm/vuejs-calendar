@@ -9,6 +9,8 @@ moment.tz.setDefault('UTC');
 Object.defineProperty(Vue.prototype, '$moment', { get() { return this.$root.moment; }})
 
 export default function(events) {
+    store.replaceState({ ...store.state, events });
+
     return new Vue({
         data: {
             moment,
@@ -25,11 +27,6 @@ export default function(events) {
         //         store.replaceState({...store.state, events })
         //     });
         // },
-        created() {
-            if (events) {
-                store.replaceState({ ...store.state, events })
-            }
-        },
         render(createElement) {
             return createElement('div', { attrs: { id: 'app' } }, [
                 createElement('app'),
