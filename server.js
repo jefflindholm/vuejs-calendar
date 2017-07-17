@@ -9,9 +9,15 @@ const serialize = require('serialize-javascript')
 
 app.use('/public', express.static(path.join(__dirname, 'public')));
 
+let renderer;
+if (process.env.NODE_ENV === 'production') {
+    const bundle = fs.readFileSync('./dist/node.bundle.js', 'utf-8');
+    renderer = require('vue-server-renderer').createBundleRenderer(bundle);
+    app.use('/dist', express.static(path.join(__dirname, 'dist')));
+}
+
 const events = [];
 
-let renderer;
 app.get('/', (req, res) => {
     let template = fs.readFileSync(path.resolve('./index.html'), 'utf-8');
     if (renderer) {
