@@ -5,20 +5,33 @@ const app = express();
 const path = require('path');
 const fs = require('fs');
 const http = require('http');
+const serialize = require('serialize-javascript')
 
 app.use('/public', express.static(path.join(__dirname, 'public')));
 
+const events = [];
+
+let renderer;
 app.get('/', (req, res) => {
     let template = fs.readFileSync(path.resolve('./index.html'), 'utf-8');
-    res.send(template);
-});
+    if (renderer) {
+        renderer.renderToString({}, (err, html) => {
+            if (err) {
+                console.log(err);
+            } else {
+                res.send(template.replace('<!--APP-LOCATION-->', `<script> window.__INITIAL_STATE__= ${serialize(events)}</script>\n${html}`));
 
-const events = [];
+            }
+        });
+    } else {
+        res.send('<p>Awiting compiliation....</p>')
+    }
+
+});
 
 app.use(require('body-parser').json());
 app.post('/event', (req, res) => {
     events.push(req.body);
-    console.log(events)
     res.sendStatus(200);
 });
 app.get('/events', (req, res) => {
@@ -31,6 +44,9 @@ if (process.env.NODE_ENV === 'development') {
     const reload = require('reload');
     const reloadServer = reload(server, app);
     require('./webpack-dev-middleware').init(app);
+    require('./webpack-server-compiler').init(bundle => {
+        renderer = require('vue-server-renderer').createBundleRenderer(bundle);
+    });
 }
 
 server.listen(process.env.PORT, function () {

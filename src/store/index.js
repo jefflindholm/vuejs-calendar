@@ -20,9 +20,6 @@ export default new Vuex.Store({
         eventFormDate: moment(),
     },
     actions: {
-        getEvents(context, payload) {
-            Axios.get('/events')
-        },
         addEvent(context, payload) {
             return new Promise((resolve, reject) => {
                 const event = {

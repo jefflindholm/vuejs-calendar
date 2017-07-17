@@ -26,9 +26,11 @@
                 if (this.description.length < 1) {
                     return;
                 }
-                this.$store.dispatch('addEvent', this.description);
-                this.description = '';
-                this.close();
+                this.$store.dispatch('addEvent', this.description)
+                    .then(() => {
+                        this.description = '';
+                        this.close();
+                    });
             }
         },
         computed: {

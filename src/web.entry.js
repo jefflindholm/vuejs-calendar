@@ -1,20 +1,14 @@
-import Vue from 'vue';
-import App from 'components/app.vue';
+import VueCalendar from './entry';
 import './style.scss';
-import store from 'store';
 
-// create $moment
 import moment from 'moment-timezone';
 moment.tz.setDefault('UTC');
-Object.defineProperty(Vue.prototype, '$moment', { get() { return this.$root.moment; }})
 
-new Vue({
-    el: '#app',
-    data: {
-        moment,
-    },
-    components: {
-        App,
-    },
-    store,
-});
+let events = window.__INITIAL_STATE__;
+if (events) {
+    events = events.map(event => ({
+        description: event.description,
+        date: moment(event.date),
+    }));
+}
+VueCalendar(events).$mount('#app');
